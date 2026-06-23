@@ -208,6 +208,9 @@ class PhotoEpilepsyAnalyzerTest {
     // =========================================================================
     // STAGE 5: POST-PROCESSING MITIGATION PIPELINE
     // =========================================================================
+    // =========================================================================
+    // STAGE 5: POST-PROCESSING MITIGATION PIPELINE
+    // =========================================================================
     @Nested
     @DisplayName("5. Video Cleanser Pipeline Tests")
     class CleanserPipelineTests {
@@ -217,17 +220,34 @@ class PhotoEpilepsyAnalyzerTest {
         @Test
         @DisplayName("Should PASS safety check after an unsafe profile has been cleaned")
         void testVideoPassesCheckOnceEditedByVideoCleanser() {
+            // Given: A highly volatile, unsafe 1-second sequence with intense brightness spikes
             List<Double> unsafeHistory = new ArrayList<>();
             for (int i = 0; i < 5; i++) {
                 unsafeHistory.add(10.0);
                 unsafeHistory.add(250.0);
             }
+            // Pad out the rest of the second to match the 30 FPS window requirement
+            while (unsafeHistory.size() < 30) {
+                unsafeHistory.add(10.0);
+            }
 
-            List<Double> cleansedHistory = videoCleanser.cleanseLuminanceSpikes(unsafeHistory);
-            AnalysisReport report = videoAnalyzer.evaluateLuminanceProfile(cleansedHistory, FPS);
+            // 1. Run the initial analysis to generate the mandatory tracking report
+            AnalysisReport unsafeReport = videoAnalyzer.evaluateLuminanceProfile(unsafeHistory, FPS);
+            assertThat(unsafeReport.isSafe()).isFalse(); // Verify it is flagged as dangerous first
 
-            assertThat(report.isSafe()).isTrue();
-            assertThat(report.getViolationTimestamps()).isEmpty();
+            // When: We execute the freeze-frame mitigation process using your updated signature
+            List<Double> cleansedHistory = videoCleanser.cleanseLuminanceSpikes(unsafeHistory, unsafeReport, FPS);
+
+            // 2. Re-analyze the flattened/cleansed data profile
+            AnalysisReport postCleanseReport = videoAnalyzer.evaluateLuminanceProfile(cleansedHistory, FPS);
+
+            // Then: The spikes must be overwritten by the safe anchor value, making the profile pass
+            assertThat(postCleanseReport.isSafe())
+                    .as("The cleanser should freeze the flashing segment, making the profile safe")
+                    .isTrue();
+            assertThat(postCleanseReport.getViolationTimestamps())
+                    .as("There should be no remaining violation timestamps left in the report")
+                    .isEmpty();
         }
     }
 }
