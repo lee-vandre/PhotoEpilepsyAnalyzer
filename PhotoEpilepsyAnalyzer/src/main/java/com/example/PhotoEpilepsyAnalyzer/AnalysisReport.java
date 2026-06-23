@@ -1,16 +1,24 @@
 package com.example.PhotoEpilepsyAnalyzer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AnalysisReport {
-    private boolean safe;
-    private List<Double> violationTimestamps; // Tracks seconds (e.g., 1.42, 15.8)
+    private final boolean safe;
+    private final List<Double> violationTimestamps;
+
+    // Fixed constructor to accept clean, matching types
+    public AnalysisReport(boolean safe, List<Double> violationTimestamps) {
+        this.safe = safe;
+        // Defensive copy: If a null list is accidentally passed, initialize an empty list to prevent NullPointerExceptions
+        this.violationTimestamps = (violationTimestamps != null) ? violationTimestamps : new ArrayList<>();
+    }
 
     public boolean isSafe() {
-        return safe;
+        return this.safe;
     }
 
     public List<Double> getViolationTimestamps() {
-        return violationTimestamps;
+        return this.violationTimestamps;
     }
 }
