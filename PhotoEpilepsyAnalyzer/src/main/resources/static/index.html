@@ -1,224 +1,224 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Flash Safety Scanner</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg:#F5F8F9;
-    --surface:#FFFFFF;
-    --ink:#1B2430;
-    --ink-soft:#5B6874;
-    --teal:#0E7C86;
-    --teal-soft:#E4F1F1;
-    --flag:#C4432B;
-    --flag-soft:#FBE9E4;
-    --line:#DCE4E6;
-    --safe:#2C7A5B;
-    --safe-soft:#E4F3EB;
-  }
-  *{box-sizing:border-box;}
-  body{
-    margin:0;
-    background:var(--bg);
-    color:var(--ink);
-    font-family:'Inter',sans-serif;
-    -webkit-font-smoothing:antialiased;
-  }
-  .wrap{max-width:880px;margin:0 auto;padding:56px 24px 96px;}
-  header.page{margin-bottom:48px;}
-  .eyebrow{
-    font-family:'IBM Plex Mono',monospace;
-    font-size:12px;
-    letter-spacing:0.08em;
-    text-transform:uppercase;
-    color:var(--teal);
-    margin-bottom:12px;
-  }
-  h1{
-    font-family:'Space Grotesk',sans-serif;
-    font-weight:700;
-    font-size:clamp(28px,4vw,38px);
-    line-height:1.15;
-    margin:0 0 12px;
-  }
-  p.lede{
-    color:var(--ink-soft);
-    font-size:16px;
-    line-height:1.6;
-    max-width:56ch;
-    margin:0;
-  }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flash Safety Scanner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#F5F8F9;
+      --surface:#FFFFFF;
+      --ink:#1B2430;
+      --ink-soft:#5B6874;
+      --teal:#0E7C86;
+      --teal-soft:#E4F1F1;
+      --flag:#C4432B;
+      --flag-soft:#FBE9E4;
+      --line:#DCE4E6;
+      --safe:#2C7A5B;
+      --safe-soft:#E4F3EB;
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--ink);
+      font-family:'Inter',sans-serif;
+      -webkit-font-smoothing:antialiased;
+    }
+    .wrap{max-width:880px;margin:0 auto;padding:56px 24px 96px;}
+    header.page{margin-bottom:48px;}
+    .eyebrow{
+      font-family:'IBM Plex Mono',monospace;
+      font-size:24px;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+      color:var(--teal);
+      margin-bottom:12px;
+    }
+    h1{
+      font-family:'Space Grotesk',sans-serif;
+      font-weight:700;
+      font-size:clamp(28px,4vw,38px);
+      line-height:1.15;
+      margin:0 0 12px;
+    }
+    p.lede{
+      color:var(--ink-soft);
+      font-size:16px;
+      line-height:1.6;
+      max-width:56ch;
+      margin:0;
+    }
 
-  .card{
-    background:var(--surface);
-    border:1px solid var(--line);
-    border-radius:14px;
-    padding:32px;
-  }
-  .card + .card{margin-top:20px;}
+    .card{
+      background:var(--surface);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:32px;
+    }
+    .card + .card{margin-top:20px;}
 
-  .dropzone{
-    border:1.5px dashed var(--line);
-    border-radius:12px;
-    padding:40px 24px;
-    text-align:center;
-    cursor:pointer;
-    transition:border-color .15s ease, background .15s ease;
-  }
-  .dropzone:hover, .dropzone.drag{
-    border-color:var(--teal);
-    background:var(--teal-soft);
-  }
-  .dropzone .icon{
-    width:40px;height:40px;margin:0 auto 14px;
-    color:var(--teal);
-  }
-  .dropzone .title{font-weight:600;font-size:15px;margin-bottom:4px;}
-  .dropzone .sub{font-size:13px;color:var(--ink-soft);}
-  input[type=file]{display:none;}
+    .dropzone{
+      border:1.5px dashed var(--line);
+      border-radius:12px;
+      padding:40px 24px;
+      text-align:center;
+      cursor:pointer;
+      transition:border-color .15s ease, background .15s ease;
+    }
+    .dropzone:hover, .dropzone.drag{
+      border-color:var(--teal);
+      background:var(--teal-soft);
+    }
+    .dropzone .icon{
+      width:40px;height:40px;margin:0 auto 14px;
+      color:var(--teal);
+    }
+    .dropzone .title{font-weight:600;font-size:15px;margin-bottom:4px;}
+    .dropzone .sub{font-size:13px;color:var(--ink-soft);}
+    input[type=file]{display:none;}
 
-  .filebar{
-    display:flex;align-items:center;justify-content:space-between;
-    margin-top:16px;padding:12px 16px;
-    background:var(--bg);border:1px solid var(--line);border-radius:10px;
-    font-family:'IBM Plex Mono',monospace;font-size:13px;
-  }
-  .filebar span.name{color:var(--ink);}
-  .filebar button.clear{
-    background:none;border:none;color:var(--ink-soft);cursor:pointer;font-size:13px;
-    font-family:'IBM Plex Mono',monospace;
-  }
-  .filebar button.clear:hover{color:var(--flag);}
+    .filebar{
+      display:flex;align-items:center;justify-content:space-between;
+      margin-top:16px;padding:12px 16px;
+      background:var(--bg);border:1px solid var(--line);border-radius:10px;
+      font-family:'IBM Plex Mono',monospace;font-size:13px;
+    }
+    .filebar span.name{color:var(--ink);}
+    .filebar button.clear{
+      background:none;border:none;color:var(--ink-soft);cursor:pointer;font-size:13px;
+      font-family:'IBM Plex Mono',monospace;
+    }
+    .filebar button.clear:hover{color:var(--flag);}
 
-  .actions{display:flex;gap:12px;margin-top:24px;}
-  button.primary{
-    background:var(--ink);color:#fff;border:none;
-    padding:12px 22px;border-radius:9px;font-weight:600;font-size:14px;
-    cursor:pointer;font-family:'Inter',sans-serif;
-    transition:background .15s ease;
-  }
-  button.primary:hover{background:#0d141c;}
-  button.primary:disabled{background:#B7C0C6;cursor:not-allowed;}
-  button.ghost{
-    background:none;border:1px solid var(--line);color:var(--ink);
-    padding:12px 22px;border-radius:9px;font-weight:600;font-size:14px;
-    cursor:pointer;font-family:'Inter',sans-serif;
-  }
-  button.ghost:hover{border-color:var(--ink);}
+    .actions{display:flex;gap:12px;margin-top:24px;}
+    button.primary{
+      background:var(--ink);color:#fff;border:none;
+      padding:12px 22px;border-radius:9px;font-weight:600;font-size:14px;
+      cursor:pointer;font-family:'Inter',sans-serif;
+      transition:background .15s ease;
+    }
+    button.primary:hover{background:#0d141c;}
+    button.primary:disabled{background:#B7C0C6;cursor:not-allowed;}
+    button.ghost{
+      background:none;border:1px solid var(--line);color:var(--ink);
+      padding:12px 22px;border-radius:9px;font-weight:600;font-size:14px;
+      cursor:pointer;font-family:'Inter',sans-serif;
+    }
+    button.ghost:hover{border-color:var(--ink);}
 
-  .status-row{
-    display:flex;align-items:center;gap:10px;
-    font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--ink-soft);
-    margin-top:18px;
-  }
-  .spinner{
-    width:14px;height:14px;border-radius:50%;
-    border:2px solid var(--line);border-top-color:var(--teal);
-    animation:spin .8s linear infinite;
-  }
-  @keyframes spin{to{transform:rotate(360deg);}}
+    .status-row{
+      display:flex;align-items:center;gap:10px;
+      font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--ink-soft);
+      margin-top:18px;
+    }
+    .spinner{
+      width:14px;height:14px;border-radius:50%;
+      border:2px solid var(--line);border-top-color:var(--teal);
+      animation:spin .8s linear infinite;
+    }
+    @keyframes spin{to{transform:rotate(360deg);}}
 
-  .hidden{display:none !important;}
+    .hidden{display:none !important;}
 
-  .verdict{
-    display:flex;align-items:center;gap:14px;
-    padding:18px 20px;border-radius:12px;margin-bottom:24px;
-  }
-  .verdict.safe{background:var(--safe-soft);}
-  .verdict.unsafe{background:var(--flag-soft);}
-  .verdict .dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
-  .verdict.safe .dot{background:var(--safe);}
-  .verdict.unsafe .dot{background:var(--flag);}
-  .verdict .label{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:17px;}
-  .verdict.safe .label{color:var(--safe);}
-  .verdict.unsafe .label{color:var(--flag);}
-  .verdict .detail{font-size:13px;color:var(--ink-soft);margin-top:2px;}
+    .verdict{
+      display:flex;align-items:center;gap:14px;
+      padding:18px 20px;border-radius:12px;margin-bottom:24px;
+    }
+    .verdict.safe{background:var(--safe-soft);}
+    .verdict.unsafe{background:var(--flag-soft);}
+    .verdict .dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+    .verdict.safe .dot{background:var(--safe);}
+    .verdict.unsafe .dot{background:var(--flag);}
+    .verdict .label{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:17px;}
+    .verdict.safe .label{color:var(--safe);}
+    .verdict.unsafe .label{color:var(--flag);}
+    .verdict .detail{font-size:13px;color:var(--ink-soft);margin-top:2px;}
 
-  .section-label{
-    font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;
-    text-transform:uppercase;color:var(--ink-soft);margin-bottom:12px;
-  }
+    .section-label{
+      font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;
+      text-transform:uppercase;color:var(--ink-soft);margin-bottom:12px;
+    }
 
-  /* Luminance timeline — the signature element */
-  .timeline{
-    position:relative;
-    height:64px;
-    border-radius:8px;
-    background:
-      repeating-linear-gradient(to right, transparent, transparent 49px, var(--line) 49px, var(--line) 50px),
-      var(--bg);
-    border:1px solid var(--line);
-    overflow:hidden;
-  }
-  .timeline .flag-mark{
-    position:absolute;top:0;bottom:0;
-    background:var(--flag-soft);
-    border-left:1.5px solid var(--flag);
-    border-right:1.5px solid var(--flag);
-  }
-  .timeline-ticks{
-    display:flex;justify-content:space-between;
-    font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-soft);
-    margin-top:6px;
-  }
-  .violation-list{
-    display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;
-  }
-  .violation-chip{
-    font-family:'IBM Plex Mono',monospace;font-size:12px;
-    background:var(--flag-soft);color:var(--flag);
-    padding:5px 10px;border-radius:6px;
-  }
+    /* Luminance timeline — the signature element */
+    .timeline{
+      position:relative;
+      height:64px;
+      border-radius:8px;
+      background:
+              repeating-linear-gradient(to right, transparent, transparent 49px, var(--line) 49px, var(--line) 50px),
+              var(--bg);
+      border:1px solid var(--line);
+      overflow:hidden;
+    }
+    .timeline .flag-mark{
+      position:absolute;top:0;bottom:0;
+      background:var(--flag-soft);
+      border-left:1.5px solid var(--flag);
+      border-right:1.5px solid var(--flag);
+    }
+    .timeline-ticks{
+      display:flex;justify-content:space-between;
+      font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-soft);
+      margin-top:6px;
+    }
+    .violation-list{
+      display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;
+    }
+    .violation-chip{
+      font-family:'IBM Plex Mono',monospace;font-size:12px;
+      background:var(--flag-soft);color:var(--flag);
+      padding:5px 10px;border-radius:6px;
+    }
 
-  .meta-grid{
-    display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
-    gap:16px;margin-top:24px;
-  }
-  .meta-grid .item{
-    border:1px solid var(--line);border-radius:10px;padding:14px 16px;
-  }
-  .meta-grid .item .k{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);font-family:'IBM Plex Mono',monospace;}
-  .meta-grid .item .v{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:20px;margin-top:4px;}
+    .meta-grid{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+      gap:16px;margin-top:24px;
+    }
+    .meta-grid .item{
+      border:1px solid var(--line);border-radius:10px;padding:14px 16px;
+    }
+    .meta-grid .item .k{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);font-family:'IBM Plex Mono',monospace;}
+    .meta-grid .item .v{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:20px;margin-top:4px;}
 
-  .download-row{
-    display:flex;align-items:center;justify-content:space-between;
-    margin-top:24px;padding-top:24px;border-top:1px solid var(--line);
-  }
-  .download-row .txt .title{font-weight:600;font-size:14px;}
-  .download-row .txt .sub{font-size:13px;color:var(--ink-soft);margin-top:2px;}
+    .download-row{
+      display:flex;align-items:center;justify-content:space-between;
+      margin-top:24px;padding-top:24px;border-top:1px solid var(--line);
+    }
+    .download-row .txt .title{font-weight:600;font-size:14px;}
+    .download-row .txt .sub{font-size:13px;color:var(--ink-soft);margin-top:2px;}
 
-  a.download-btn{
-    background:var(--teal);color:#fff;text-decoration:none;
-    padding:12px 22px;border-radius:9px;font-weight:600;font-size:14px;
-    font-family:'Inter',sans-serif;
-  }
-  a.download-btn:hover{background:#0b6971;}
+    a.download-btn{
+      background:var(--teal);color:#fff;text-decoration:none;
+      padding:12px 22px;border-radius:9px;font-weight:600;font-size:14px;
+      font-family:'Inter',sans-serif;
+    }
+    a.download-btn:hover{background:#0b6971;}
 
-  .error-box{
-    background:var(--flag-soft);color:var(--flag);
-    border-radius:10px;padding:14px 16px;font-size:13px;margin-top:16px;
-  }
+    .error-box{
+      background:var(--flag-soft);color:var(--flag);
+      border-radius:10px;padding:14px 16px;font-size:13px;margin-top:16px;
+    }
 
-  .config{
-    margin-top:40px;font-size:12px;color:var(--ink-soft);
-    font-family:'IBM Plex Mono',monospace;
-  }
-  .config summary{cursor:pointer;}
-  .config-row{display:flex;gap:8px;margin-top:10px;align-items:center;}
-  .config-row label{width:110px;flex-shrink:0;}
-  .config-row input{
-    flex:1;padding:7px 10px;border:1px solid var(--line);border-radius:6px;
-    font-family:'IBM Plex Mono',monospace;font-size:12px;background:var(--surface);color:var(--ink);
-  }
+    .config{
+      margin-top:40px;font-size:12px;color:var(--ink-soft);
+      font-family:'IBM Plex Mono',monospace;
+    }
+    .config summary{cursor:pointer;}
+    .config-row{display:flex;gap:8px;margin-top:10px;align-items:center;}
+    .config-row label{width:110px;flex-shrink:0;}
+    .config-row input{
+      flex:1;padding:7px 10px;border:1px solid var(--line);border-radius:6px;
+      font-family:'IBM Plex Mono',monospace;font-size:12px;background:var(--surface);color:var(--ink);
+    }
 
-  @media (prefers-reduced-motion: reduce){
-    .spinner{animation:none;}
-  }
-</style>
+    @media (prefers-reduced-motion: reduce){
+      .spinner{animation:none;}
+    }
+  </style>
 </head>
 <body>
 <div class="wrap">
@@ -290,183 +290,168 @@
       <label>Analyze URL</label>
       <input id="cfgAnalyze" value="/api/videos/analyze" />
     </div>
-    <div class="config-row">
-      <label>Process URL</label>
-      <input id="cfgProcess" value="/api/videos/process" />
-    </div>
   </details>
 
 </div>
 
 <script>
-(() => {
-  const dropzone = document.getElementById('dropzone');
-  const fileInput = document.getElementById('fileInput');
-  const filebar = document.getElementById('filebar');
-  const fileName = document.getElementById('fileName');
-  const clearFile = document.getElementById('clearFile');
-  const scanBtn = document.getElementById('scanBtn');
-  const statusRow = document.getElementById('statusRow');
-  const statusText = document.getElementById('statusText');
-  const errorBox = document.getElementById('errorBox');
-  const resultsCard = document.getElementById('resultsCard');
-  const verdict = document.getElementById('verdict');
-  const verdictLabel = document.getElementById('verdictLabel');
-  const verdictDetail = document.getElementById('verdictDetail');
-  const timeline = document.getElementById('timeline');
-  const timelineTicks = document.getElementById('timelineTicks');
-  const violationList = document.getElementById('violationList');
-  const metaGrid = document.getElementById('metaGrid');
-  const downloadRow = document.getElementById('downloadRow');
-  const downloadBtn = document.getElementById('downloadBtn');
-  const cfgAnalyze = document.getElementById('cfgAnalyze');
-  const cfgProcess = document.getElementById('cfgProcess');
+  (() => {
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('fileInput');
+    const filebar = document.getElementById('filebar');
+    const fileName = document.getElementById('fileName');
+    const clearFile = document.getElementById('clearFile');
+    const scanBtn = document.getElementById('scanBtn');
+    const statusRow = document.getElementById('statusRow');
+    const statusText = document.getElementById('statusText');
+    const errorBox = document.getElementById('errorBox');
+    const resultsCard = document.getElementById('resultsCard');
+    const verdict = document.getElementById('verdict');
+    const verdictLabel = document.getElementById('verdictLabel');
+    const verdictDetail = document.getElementById('verdictDetail');
+    const timeline = document.getElementById('timeline');
+    const timelineTicks = document.getElementById('timelineTicks');
+    const violationList = document.getElementById('violationList');
+    const metaGrid = document.getElementById('metaGrid');
+    const downloadRow = document.getElementById('downloadRow');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const cfgAnalyze = document.getElementById('cfgAnalyze');
 
-  let selectedFile = null;
+    let selectedFile = null;
 
-  function showFile(file){
-    selectedFile = file;
-    fileName.textContent = file.name;
-    filebar.classList.remove('hidden');
-    scanBtn.disabled = false;
-    errorBox.classList.add('hidden');
-    resultsCard.classList.add('hidden');
-  }
-
-  dropzone.addEventListener('click', () => fileInput.click());
-  dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('drag'); });
-  dropzone.addEventListener('dragleave', () => dropzone.classList.remove('drag'));
-  dropzone.addEventListener('drop', e => {
-    e.preventDefault();
-    dropzone.classList.remove('drag');
-    if (e.dataTransfer.files.length) showFile(e.dataTransfer.files[0]);
-  });
-  fileInput.addEventListener('change', () => {
-    if (fileInput.files.length) showFile(fileInput.files[0]);
-  });
-  clearFile.addEventListener('click', () => {
-    selectedFile = null;
-    fileInput.value = '';
-    filebar.classList.add('hidden');
-    scanBtn.disabled = true;
-    resultsCard.classList.add('hidden');
-  });
-
-  function setStatus(msg){
-    statusRow.classList.remove('hidden');
-    statusText.textContent = msg;
-  }
-  function clearStatus(){
-    statusRow.classList.add('hidden');
-  }
-
-  function renderTimeline(violationSeconds, fps, totalSeconds){
-    timeline.innerHTML = '';
-    const duration = totalSeconds || (violationSeconds.length ? Math.max(...violationSeconds) + 5 : 30);
-    violationSeconds.forEach(sec => {
-      const mark = document.createElement('div');
-      mark.className = 'flag-mark';
-      const leftPct = (sec / duration) * 100;
-      const widthPct = Math.max((1 / duration) * 100, 0.6);
-      mark.style.left = leftPct + '%';
-      mark.style.width = widthPct + '%';
-      timeline.appendChild(mark);
-    });
-
-    timelineTicks.innerHTML = '';
-    const tickCount = 6;
-    for (let i = 0; i <= tickCount; i++){
-      const t = document.createElement('span');
-      const secVal = Math.round((duration / tickCount) * i);
-      t.textContent = secVal + 's';
-      timelineTicks.appendChild(t);
+    function showFile(file){
+      selectedFile = file;
+      fileName.textContent = file.name;
+      filebar.classList.remove('hidden');
+      scanBtn.disabled = false;
+      errorBox.classList.add('hidden');
+      resultsCard.classList.add('hidden');
     }
 
-    violationList.innerHTML = '';
-    violationSeconds.forEach(sec => {
-      const chip = document.createElement('div');
-      chip.className = 'violation-chip';
-      chip.textContent = sec.toFixed(2) + 's';
-      violationList.appendChild(chip);
+    dropzone.addEventListener('click', () => fileInput.click());
+    dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('drag'); });
+    dropzone.addEventListener('dragleave', () => dropzone.classList.remove('drag'));
+    dropzone.addEventListener('drop', e => {
+      e.preventDefault();
+      dropzone.classList.remove('drag');
+      if (e.dataTransfer.files.length) showFile(e.dataTransfer.files[0]);
     });
-  }
-
-  function renderResults(report, processedBlobUrl){
-    const safe = !!report.safe;
-    const violations = report.violationTimestamps || [];
-
-    verdict.className = 'verdict ' + (safe ? 'safe' : 'unsafe');
-    verdictLabel.textContent = safe ? 'Safe — no flash violations detected' : 'Unsafe — flash violations detected';
-    verdictDetail.textContent = safe
-      ? 'No corrective reassembly was needed.'
-      : violations.length + ' second(s) flagged and corrected below.';
-
-    renderTimeline(violations, report.fps || 30);
-
-    metaGrid.innerHTML = '';
-    const items = [
-      { k: 'Frame rate', v: (report.fps || '—') + ' fps' },
-      { k: 'Violations', v: violations.length },
-      { k: 'Status', v: safe ? 'Pass' : 'Corrected' },
-    ];
-    items.forEach(it => {
-      const div = document.createElement('div');
-      div.className = 'item';
-      div.innerHTML = `<div class="k">${it.k}</div><div class="v">${it.v}</div>`;
-      metaGrid.appendChild(div);
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files.length) showFile(fileInput.files[0]);
+    });
+    clearFile.addEventListener('click', () => {
+      selectedFile = null;
+      fileInput.value = '';
+      filebar.classList.add('hidden');
+      scanBtn.disabled = true;
+      resultsCard.classList.add('hidden');
     });
 
-    if (!safe && processedBlobUrl){
-      downloadRow.classList.remove('hidden');
-      downloadBtn.href = processedBlobUrl;
-      downloadBtn.download = 'safe_' + (selectedFile ? selectedFile.name : 'video.mp4');
-    } else {
-      downloadRow.classList.add('hidden');
+    function setStatus(msg){
+      statusRow.classList.remove('hidden');
+      statusText.textContent = msg;
+    }
+    function clearStatus(){
+      statusRow.classList.add('hidden');
     }
 
-    resultsCard.classList.remove('hidden');
-  }
+    function renderTimeline(violationSeconds, fps, totalSeconds){
+      timeline.innerHTML = '';
+      const duration = totalSeconds || (violationSeconds.length ? Math.max(...violationSeconds) + 5 : 30);
+      violationSeconds.forEach(sec => {
+        const mark = document.createElement('div');
+        mark.className = 'flag-mark';
+        const leftPct = (sec / duration) * 100;
+        const widthPct = Math.max((1 / duration) * 100, 0.6);
+        mark.style.left = leftPct + '%';
+        mark.style.width = widthPct + '%';
+        timeline.appendChild(mark);
+      });
 
-  async function runScan(){
-    if (!selectedFile) return;
-    errorBox.classList.add('hidden');
-    resultsCard.classList.add('hidden');
-    scanBtn.disabled = true;
-
-    try {
-      setStatus('Extracting luminance profile…');
-      const analyzeForm = new FormData();
-      analyzeForm.append('file', selectedFile);
-
-      const analyzeRes = await fetch(cfgAnalyze.value, { method: 'POST', body: analyzeForm });
-      if (!analyzeRes.ok) throw new Error('Analysis request failed (' + analyzeRes.status + ')');
-      const report = await analyzeRes.json();
-
-      let processedBlobUrl = null;
-
-      if (!report.safe){
-        setStatus('Flash violations found — reassembling safe version…');
-        const processForm = new FormData();
-        processForm.append('file', selectedFile);
-        const processRes = await fetch(cfgProcess.value, { method: 'POST', body: processForm });
-        if (!processRes.ok) throw new Error('Reassembly request failed (' + processRes.status + ')');
-        const blob = await processRes.blob();
-        processedBlobUrl = URL.createObjectURL(blob);
+      timelineTicks.innerHTML = '';
+      const tickCount = 6;
+      for (let i = 0; i <= tickCount; i++){
+        const t = document.createElement('span');
+        const secVal = Math.round((duration / tickCount) * i);
+        t.textContent = secVal + 's';
+        timelineTicks.appendChild(t);
       }
 
-      clearStatus();
-      renderResults(report, processedBlobUrl);
-    } catch (err){
-      clearStatus();
-      errorBox.textContent = err.message || 'Something went wrong while scanning this file.';
-      errorBox.classList.remove('hidden');
-    } finally {
-      scanBtn.disabled = false;
+      violationList.innerHTML = '';
+      violationSeconds.forEach(sec => {
+        const chip = document.createElement('div');
+        chip.className = 'violation-chip';
+        chip.textContent = sec.toFixed(2) + 's';
+        violationList.appendChild(chip);
+      });
     }
-  }
 
-  scanBtn.addEventListener('click', runScan);
-})();
+    function renderResults(report){
+      const safe = !!report.safe;
+      const violations = report.violationTimestamps || [];
+
+      verdict.className = 'verdict ' + (safe ? 'safe' : 'unsafe');
+      verdictLabel.textContent = safe ? 'Safe — no flash violations detected' : 'Unsafe — flash violations detected';
+      verdictDetail.textContent = safe
+              ? 'No corrective reassembly was needed.'
+              : violations.length + ' second(s) flagged and corrected below.';
+
+      renderTimeline(violations, report.fps || 30);
+
+      metaGrid.innerHTML = '';
+      const items = [
+        { k: 'Frame rate', v: (report.fps || '—') + ' fps' },
+        { k: 'Violations', v: violations.length },
+        { k: 'Status', v: safe ? 'Pass' : 'Corrected' },
+      ];
+      items.forEach(it => {
+        const div = document.createElement('div');
+        div.className = 'item';
+        div.innerHTML = `<div class="k">${it.k}</div><div class="v">${it.v}</div>`;
+        metaGrid.appendChild(div);
+      });
+
+      if (!safe && report.downloadUrl){
+        downloadRow.classList.remove('hidden');
+        downloadBtn.href = report.downloadUrl;
+        downloadBtn.removeAttribute('download'); // let the server's Content-Disposition name it
+      } else {
+        downloadRow.classList.add('hidden');
+      }
+
+      resultsCard.classList.remove('hidden');
+    }
+
+    async function runScan(){
+      if (!selectedFile) return;
+      errorBox.classList.add('hidden');
+      resultsCard.classList.add('hidden');
+      scanBtn.disabled = true;
+
+      try {
+        setStatus('Extracting luminance profile and checking for flash violations…');
+        const form = new FormData();
+        form.append('file', selectedFile);
+
+        const res = await fetch(cfgAnalyze.value, { method: 'POST', body: form });
+        const payload = await res.json();
+        if (!res.ok || !payload.success) {
+          throw new Error(payload.message || ('Request failed (' + res.status + ')'));
+        }
+
+        clearStatus();
+        renderResults(payload);
+      } catch (err){
+        clearStatus();
+        errorBox.textContent = err.message || 'Something went wrong while scanning this file.';
+        errorBox.classList.remove('hidden');
+      } finally {
+        scanBtn.disabled = false;
+      }
+    }
+
+    scanBtn.addEventListener('click', runScan);
+  })();
 </script>
 </body>
 </html>
