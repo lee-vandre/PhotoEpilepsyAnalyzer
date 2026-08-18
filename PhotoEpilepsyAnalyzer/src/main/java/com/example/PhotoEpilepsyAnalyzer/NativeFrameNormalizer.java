@@ -1,61 +1,67 @@
 package com.example.PhotoEpilepsyAnalyzer;
 
-import java.awt.image.BufferedImage;
+import org.bytedeco.javacv.Frame;
+import org.bytedeco.opencv.opencv_core.Mat;
 
-public class ImageNormalizer {
+import org.bytedeco.javacv.OpenCVFrameConverter;
+import org.bytedeco.javacpp.indexer.UByteIndexer;
+import org.springframework.stereotype.Component;
+
+@Component
+public class NativeFrameNormalizer {
 
     private static final int MAX_CHANGE = 2;
+    // Thread-safe converter adapter to map JavaCV Frames to OpenCV Mats
+    private final OpenCVFrameConverter.ToMat matConverter = new OpenCVFrameConverter.ToMat();
 
-    public static BufferedImage normalizeImage(
-            BufferedImage image1,
-            BufferedImage image2) {
+    /**
+     * Natively alters target frame pixel data by clamping changes relative to a base frame.
+     * Operates directly on the underlying off-heap memory using OpenCV structures.
+     */
+    public void normalizeFrameInPlace(Frame baseFrame, Frame targetFrame) {
+        if (baseFrame == null || targetFrame == null || targetFrame.image == null) {
+            return;
+        }
 
-        int width = Math.min(image1.getWidth(), image2.getWidth());
-        int height = Math.min(image1.getHeight(), image2.getHeight());
+        // 1. Convert native frame allocations into OpenCV Matrices (zero-copy wrapper)
+        Mat baseMat = matConverter.convert(baseFrame);
+        Mat targetMat = matConverter.convert(targetFrame);
 
-        BufferedImage result =
-                new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        // Ensure both underlying matrices share the same frame configurations
+        if (baseMat.rows() != targetMat.rows() || baseMat.cols() != targetMat.cols()) {
+            return;
+        }
 
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
+        int rows = targetMat.rows();
+        int cols = targetMat.cols();
 
-                int rgb1 = image1.getRGB(x, y);
-                int rgb2 = image2.getRGB(x, y);
+        // 2. Obtain high-performance, direct pointer indexers for raw unsigned bytes (UByte)
+        // BGR layout maps index values to: [row, col, channel] (0=Blue, 1=Green, 2=Red)
+        try (UByteIndexer baseIdx = baseMat.createIndexer();
+             UByteIndexer targetIdx = targetMat.createIndexer()) {
 
-                int r1 = (rgb1 >> 16) & 0xFF;
-                int g1 = (rgb1 >> 8) & 0xFF;
-                int b1 = rgb1 & 0xFF;
+            for (int y = 0; y < rows; y++) {
+                for (int x = 0; x < cols; x++) {
+                    // Loop through the 3 color channels (Blue, Green, Red)
+                    for (int c = 0; c < 3; c++) {
+                        int baseVal = baseIdx.get(y, x, c);
+                        int targetVal = targetIdx.get(y, x, c);
 
-                int r2 = (rgb2 >> 16) & 0xFF;
-                int g2 = (rgb2 >> 8) & 0xFF;
-                int b2 = rgb2 & 0xFF;
+                        // Apply your custom delta threshold clamp logic
+                        int diff = targetVal - baseVal;
+                        if (diff > MAX_CHANGE) {
+                            diff = MAX_CHANGE;
+                        } else if (diff < -MAX_CHANGE) {
+                            diff = -MAX_CHANGE;
+                        }
 
-                int r = limitChange(r1, r2);
-                int g = limitChange(g1, g2);
-                int b = limitChange(b1, b2);
+                        int normalizedVal = Math.max(0, Math.min(255, baseVal + diff));
 
-                int newRgb = (r << 16) | (g << 8) | b;
-
-                result.setRGB(x, y, newRgb);
+                        // 3. Structural mutation: Overwrite the target buffer byte directly in memory
+                        targetIdx.put(y, x, c, normalizedVal);
+                    }
+                }
             }
         }
-
-        return result;
-    }
-
-    private static int limitChange(int original, int changed) {
-        int diff = changed - original;
-
-        if (diff > MAX_CHANGE) {
-            diff = MAX_CHANGE;
-        } else if (diff < -MAX_CHANGE) {
-            diff = -MAX_CHANGE;
-        }
-
-        return clamp(original + diff);
-    }
-
-    private static int clamp(int value) {
-        return Math.max(0, Math.min(255, value));
     }
 }
